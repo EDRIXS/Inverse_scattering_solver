@@ -61,7 +61,9 @@ if args.num_points:
 lower_bounds, upper_bounds = map(list, zip(*record['greedy_bounds'].values()))
 greedy_keys=record['greedy_bounds'].keys()
 
-bounds = (lower_bounds, upper_bounds)
+#bounds = (lower_bounds, upper_bounds)
+bounds = (lower_bounds, None)
+
 resTab2=[]
 
 
@@ -85,7 +87,7 @@ for i in range(args.index1,args.index2+1):
         params = greedy_start.copy()
         params.update({k: float(v) for k, v in zip(greedy_keys, x)})
         return cfg.funGreedy(**params)
-    resTab2.append(pybobyqa.solve(f_wrapped, x0,maxfun=record['max_eval_greedy'],bounds=bounds,scaling_within_bounds=True ))
+    resTab2.append(pybobyqa.solve(f_wrapped, x0,maxfun=record['max_eval_greedy'],bounds=bounds,scaling_within_bounds=False ))
     with open(record['name']+record['optname']+str(args.index1)+'_'+str(args.index2+1)+".txt", 'a') as f:
         #print(resTab2[-1].x, file=f)
         print(resTab2[-1], file=f)

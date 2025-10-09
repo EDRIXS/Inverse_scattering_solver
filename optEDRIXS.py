@@ -2,7 +2,10 @@ import os
 import tarfile
 import json
 import numpy as np
-from bayes_opt import BayesianOptimization, JSONLogger, Events
+#from bayes_opt_legacy.bayesian_optimization import BayesianOptimization
+#from bayes_opt_legacy.event import Events
+#from bayes_opt_legacy.logger import JSONLogger
+from bayes_opt import BayesianOptimization, Events, JSONLogger
 import argparse, importlib.util, sys
 
 from scipy.sparse import csr_matrix
@@ -195,7 +198,7 @@ def getDistanceMatrix(fun,valtab,coordsfin):
         print(i)
         for j in range(i+1,len(inds)): # evaluate the coordinates at 20 uniformly spaced points between current point and remaining points
             coordtab = [coordsfin[inds[i]]+k*(coordsfin[inds[j]]-coordsfin[inds[i]]) for k in np.linspace(0,1,20)]
-            coordtab=np.array(coordtab).reshape(-1,10);
+            coordtab=np.array(coordtab).reshape(-1,len(coordsfin[0]));
             funtab=[]
             for k in range(len(coordtab)): #  calculate the distance at the coordinates of coordtab
                 funtab.append(fun(coordtab[k]))

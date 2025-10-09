@@ -8,7 +8,14 @@ p = argparse.ArgumentParser(
 p.add_argument("--config-py", required=True,
                    help="Path to the Python config file")
 p.add_argument(
-        "run_ind",
+        "--init-seed",
+        type=int,
+        nargs="?",           # allow it to be omitted
+        default=0,           # use 0 if not provided
+        help="Initial seed (default: %(default)s)"
+    )
+p.add_argument(
+        "--run-ind",
         type=int,
         nargs="?",           # allow it to be omitted
         default=1,           # use 1 if not provided
@@ -22,4 +29,5 @@ cfg = import_config(args.config_py)
 
 record = cfg.record
 record['run_ind'] = args.run_ind
+record['init_seed'] = args.init_seed
 run_bayesian_optimization(record, cfg.fun, output_dir = cfg.output_dir)
