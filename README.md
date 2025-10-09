@@ -1,3 +1,50 @@
+-------------------------------------------------------------
+
+This package suggests Hamiltonian parameter combinations to
+reproduce experimental Resonant Inelastic X-ray Scattering (RIXS)
+spectra from first-principles models based on exact diagonalization.
+
+The method works in three steps:
+
+1) Bayesian Optimization (BO) in the most important parameter space
+
+2) Greedy refinement of the best outcomes of BO
+
+3) Clustering the outcomes for a small number of distinct
+best fit candidates.
+
+Usage:
+
+Material/model-specific information is assumed to be stored in a
+config python script. Please consult with the examples provided in
+the examples/ folder. The script is dynamically loaded by the BO,
+refinement and clustering scripts.
+
+Usage in a HPC environment is facilitated by an extra index argument
+segmenting run batches.
+
+1) Bayesian optimization:
+
+python BO_run.py --config-py examples/NiCl2/NiCl2.py 1
+
+2) Greedy refinement:
+
+python BO_refine.py --config-py examples/NiCl2/NiCl2.py 1
+
+3) Clustering:
+
+python BO_cluster.py --config-py examples/NiCl2/NiCl2.py 1
+
+In these series of runs, we first perform a Greedy optimization for the
+material and model specified in the script examples/NiCl2/NiCl2.py, repeating
+the analysis a number N of times specified in the config script with the
+appropriate random seeds depending on the argument index, and then properly
+names the output files using the index.
+Secondly, we perform the greedy refinement on the output of step 1.
+Thirdly, we select the best candidates in different "valleys" of the
+distance function.
+
+
 Data Repository
 ===============
 
