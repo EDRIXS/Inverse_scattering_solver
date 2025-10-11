@@ -21,7 +21,7 @@ python BO_run.py --config-py NiPS3_config.py --init-seed 90 --run-ind 10
 
 # Query number of best points satisfying selection criteria in the config file
 
-python BO_refine.sh --config-py NiPS3_config.sh --num-points
+python BO_refine.py --config-py NiPS3_config.py --num-points
 
 ## returns e.g. 26
 
