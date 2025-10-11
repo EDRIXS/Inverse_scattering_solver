@@ -22,6 +22,11 @@ def import_config(path):
     spec.loader.exec_module(cfg)
     return cfg
 
+def numgrad(cmap,dEloss,dOm):
+    dycmap=(cmap[1:]-cmap[:-1])/(dEloss)
+    dxcmap=(cmap[:,1:]-cmap[:,:-1])/(dOm)
+    return np.sqrt(dycmap[:,:-1]**2+dxcmap[:-1]**2)
+
 def target_L1sum(params, black_box, rixs_ref):
     simtab = black_box(params)
     simtab=simtab/np.sum(abs(simtab));
@@ -34,7 +39,26 @@ def target_L1max(params, black_box, rixs_ref):
     reftab=rixs_ref/np.max(abs(rixs_ref))
     return -np.sum(abs(reftab-simtab))
 
-def run_bayesian_optimization(record, func, output_dir='OptData'):
+def target_All(params, black_box, rixs_ref, eres, omres):
+    simtab = black_box(params)
+
+    results=np.zeros(4);
+    simtab2=simtab/np.sum(abs(simtab));
+    reftab2=rixs_ref/np.sum(abs(rixs_ref))
+    results[0] = -np.sum(abs(reftab2-simtab2))
+
+    simtab3=simtab/np.max(abs(simtab));
+    reftab3=rixs_ref/np.max(abs(rixs_ref))
+    results[1] = -np.sum(abs(reftab3-simtab3))
+    results[2] = -np.sum(abs(reftab3**2-simtab3**2)**0.5)
+
+    simtab4=numgrad(simtab/np.max(abs(simtab)),eres,omres)
+    reftab4=numgrad(rixs_ref/np.max(abs(rixs_ref)),eres,omres)
+    results[3] = -np.sum(abs(reftab4-simtab4))
+
+    return results
+
+def run_bayesian_optimization(record, func):
     """
     Runs Bayesian optimization multiple times and logs results.
 
@@ -65,7 +89,7 @@ def run_bayesian_optimization(record, func, output_dir='OptData'):
     pbounds = record['pbounds']
 
     # Ensure output directories exist
-    os.makedirs(output_dir, exist_ok=True)
+    os.makedirs(record['output_dir'], exist_ok=True)
     temp_dir = datastr + '_logs'
     os.makedirs(temp_dir, exist_ok=True)
 
@@ -74,7 +98,7 @@ def run_bayesian_optimization(record, func, output_dir='OptData'):
 
     for i in range(1, num_runs_local + 1):
         # Determine a reproducible random state
-        rand_state = record['init_seed'] + i + (run_ind-1)*num_runs_local
+        rand_state = record['init_seed'] + i
         seeds.append(rand_state)
 
         # Set up optimizer
@@ -102,10 +126,10 @@ def run_bayesian_optimization(record, func, output_dir='OptData'):
     record['rand_seed'] = seeds
 
     # Create compressed archive of logs
-    tar_path = os.path.join(output_dir, f"{datastr}.bz2")
+    tar_path = os.path.join(record['output_dir'], f"{datastr}.bz2")
     with tarfile.open(tar_path, "w:bz2") as tar:
         for i in range(1, num_runs_local + 1):
-            tar.add(os.path.join(temp_dir, f"{datastr}_{i}.log.json"))
+            tar.add(os.path.join(temp_dir, f"{datastr}_{i}.log.json"),arcname=f"{datastr}{i}.log.json")
 
     # Clean up individual log files
     for i in range(1, num_runs_local + 1):
@@ -113,7 +137,7 @@ def run_bayesian_optimization(record, func, output_dir='OptData'):
     os.rmdir(temp_dir)
 
     # Append record to a master JSONL file
-    master_file = os.path.join(output_dir, f"{datastr}.json")
+    master_file = os.path.join(record['output_dir'], f"{datastr}.json")
     with open(master_file, 'a') as fp:
         json.dump(record, fp)
         fp.write('\n')

@@ -297,8 +297,10 @@ def calc_RIXS_Q0(evals_i, evals_n, T_abs,
     return rixs
 
 class RIXS_runner_NIPS3:
-    def __init__(self, view):
+    def __init__(self, view, eloss_in, omres_in):
         self.view = view
+        self.eloss = eloss_in
+        self.omres = omres_in
 
     def __call__(self, params_in,ed_only=False):
         """ Calculate RIXS spectrum in single atom approximation for NiPS3 """
@@ -331,8 +333,8 @@ class RIXS_runner_NIPS3:
                                 c_soc=c_soc, v_noccu=8, slater=slater,tenDq=params['tenDq'])
             return out
 
-        RIXS_params = dict(omega=np.linspace(848.5-857.15+params_in['xoffset'], 857.6-857.15+params_in['xoffset'],40), Gam_c=params_in['Gam_c'],
-                   eloss=np.linspace(0.5, 2.0,151), sigma=params_in['sigma'], fraction=0.)
+        RIXS_params = dict(omega=np.linspace(848.5-857.15+params_in['xoffset'], 857.6-857.15+params_in['xoffset'],self.omres), Gam_c=params_in['Gam_c'],
+                   eloss=self.eloss, sigma=params_in['sigma'], fraction=0.)
 
         ei0, ef10, ef20 = get_pol('LH', tth=150., thin=23., phi=90.)
         eip, ef1p, ef2p = get_pol('LH', tth=150., thin=23., phi=90.+120.) # twin

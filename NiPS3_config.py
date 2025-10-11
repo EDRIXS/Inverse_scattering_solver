@@ -8,7 +8,7 @@ import ipyparallel as ipp
 from utils_from_NiPS import get_pol, perform_ED_1site, calc_RIXS_Q0
 from utils_from_NiPS import RIXS_runner_NIPS3
 from RIXS_utils import getParams
-from optEDRIXS import run_bayesian_optimization, target_L1sum
+from optEDRIXS import run_bayesian_optimization, target_L1sum, target_All
 
 rc = ipp.Cluster(n=6).start_and_connect_sync()
 rc.ids
@@ -26,6 +26,10 @@ n_occu = 8
 
 rixs_ref = np.loadtxt('NiPS3v2.numpy');
 
+eloss = np.linspace(0.5, 2.0,151)
+ombounds = [0.,12.0]
+omres = 40
+
 output_dir ='OptData'
 
 # descriptions to be saved in log file
@@ -34,7 +38,7 @@ descr = ('NiPS3 experiment, atomic, d'+str(n_occu)+', '+edge+
 method = "BayesianOptimization with out of the box hyperparameters"
 tfunc = "distance_neg"
 
-data_str = 'NiPS3_L1sum_Final_s0.025'
+data_str = 'NiPS3_L1sum_Final'
 data_opt='_subseq_opt2'
 
 num_runs_global=10
@@ -84,7 +88,7 @@ rand_seed=np.zeros(num_runs_local,dtype=np.int32)
 """
 
 
-rixs_funV =  RIXS_runner_NIPS3(view)
+rixs_funV =  RIXS_runner_NIPS3(view,eloss,omres)
 
 fixed_params = {
        'soc_v_i' : true_values['soc_v_i'],
@@ -99,21 +103,21 @@ def fun(tenDq, F2_dd, F4_dd, F2_dp, G1_dp, G3_dp, xoffset):
     return target_L1sum(params,rixs_funV,rixs_ref)
 
 # parameters for optimization
-threshold_factor = 1.1
+threshold_factor = 1.15
 max_eval_greedy = 3600
 
 greedy_bounds = {
-        'F2_dd' : [0.0, pbounds['F2_dd'][1]],
-        'F2_dp' : [0.0, pbounds['F2_dp'][1]],
-        'F4_dd' : [0.0, pbounds['F4_dd'][1]],
-        'G1_dp' : [0.0, pbounds['G1_dp'][1]],
-        'G3_dp' : [0.0, pbounds['G3_dp'][1]],
-        'tenDq' : [0.5, 2.5],
-        'xoffset' : [-12., 12],
-        'soc_v_i' : [0., 1],
-        'soc_v_n' : [0., 1],
-        'soc_c' : [0., 20],
-        'Gam_c' : [0.,1],
+        'F2_dd' : [0.0, None],
+        'F2_dp' : [0.0, None],
+        'F4_dd' : [0.0, None],
+        'G1_dp' : [0.0, None],
+        'G3_dp' : [0.0, None],
+        'tenDq' : [0.5, None],
+        'xoffset' : [-12., None],
+        'soc_v_i' : [0., None],
+        'soc_v_n' : [0., None],
+        'soc_c' : [0., None],
+        'Gam_c' : [0.,None],
         }
 
 greedy_filters = [
@@ -126,11 +130,15 @@ fixed_params_greedy = {
 
        'sigma' : true_values['sigma']
 }
-def funGreedy(F2_dd, F2_dp, F4_dd, G1_dp, G3_dp, tenDq, xoffset, soc_v_i,soc_v_n,soc_c, Gam_c):
-#def funGreedy(F2_dd, F2_dp, F4_dd, G1_dp, G3_dp, tenDq, xoffset, soc_v_i,soc_v_n):
 
+def funGreedy(F2_dd, F2_dp, F4_dd, G1_dp, G3_dp, tenDq, xoffset, soc_v_i,soc_v_n,soc_c, Gam_c):
     params = {**locals(), **fixed_params_greedy}
     return -target_L1sum(params,rixs_funV,rixs_ref)
+
+def funAll(F2_dd, F2_dp, F4_dd, G1_dp, G3_dp, tenDq, xoffset, soc_v_i,soc_v_n,soc_c, Gam_c):
+    params = {**locals(), **fixed_params_greedy}
+    return -target_All(params,rixs_funV,rixs_ref, eloss[1]-eloss[0],(ombounds[1]-ombounds[0])/(omres-1))
+
 
 record=dict(name = data_str, optname=data_opt,  num_runs_local=num_runs_local, num_runs_global = num_runs_global,
             init_points = init_points,

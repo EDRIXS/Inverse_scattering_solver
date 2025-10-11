@@ -30,4 +30,4 @@ cfg = import_config(args.config_py)
 record = cfg.record
 record['run_ind'] = args.run_ind
 record['init_seed'] = args.init_seed
-run_bayesian_optimization(record, cfg.fun, output_dir = cfg.output_dir)
+run_bayesian_optimization(record, cfg.fun)

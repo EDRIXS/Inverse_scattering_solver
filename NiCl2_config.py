@@ -52,11 +52,11 @@ data_opt='_subseq_opt2'
 #num_iters=10
 
 num_runs_global=10
-num_runs_local=3
+num_runs_local=6
 num_iters=20
 
 init_points = 10
-init_seed = 0
+#init_seed = 0
 
 # get ion parameters from database
 tenDq=1.8
