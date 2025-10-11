@@ -25,18 +25,18 @@ segmenting run batches.
 
 1) Bayesian optimization:
 
-python BO_run.py --config-py examples/NiCl2/NiCl2.py 1
+python BO_run.sh --config-py NiPS3_config.sh --init-seed 0 --run-ind 1
 
 2) Greedy refinement:
 
-python BO_refine.py --config-py examples/NiCl2/NiCl2.py 1
+python BO_refine.sh --config-py NiPS3_config.sh --index1 0 --index2 6
 
 3) Clustering:
 
-python BO_cluster.py --config-py examples/NiCl2/NiCl2.py 1
+python BO_cluster.sh --config-py NiPS3_config.sh --input NiPS3_L1sum_Final_s0.025.txt --output NiPS3_clusters
 
 In these series of runs, we first perform a Greedy optimization for the
-material and model specified in the script examples/NiCl2/NiCl2.py, repeating
+material and model specified in the script NiPS3_config.sh, repeating
 the analysis a number N of times specified in the config script with the
 appropriate random seeds depending on the argument index, and then properly
 names the output files using the index.
@@ -44,6 +44,7 @@ Secondly, we perform the greedy refinement on the output of step 1.
 Thirdly, we select the best candidates in different "valleys" of the
 distance function.
 
+See NiPS_pipeline.sh for further details of the running process.
 
 Data Repository
 ===============
