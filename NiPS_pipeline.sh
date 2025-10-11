@@ -23,7 +23,7 @@ python BO_run.py --config-py NiPS3_config.py --init-seed 90 --run-ind 10
 
 python BO_refine.py --config-py NiPS3_config.py --num-points
 
-## returns e.g. 26
+## returns e.g. 23
 
 # Greedy refinement for the best points, here e.g. in batches of six
 # The codes of the section below can be run in parallel
@@ -31,8 +31,7 @@ python BO_refine.py --config-py NiPS3_config.py --num-points
 python BO_refine.py --config-py NiPS3_config.py --index1 0 --index2 6
 python BO_refine.py --config-py NiPS3_config.py 6 12
 python BO_refine.py --config-py NiPS3_config.py 12 18
-python BO_refine.py --config-py NiPS3_config.py 18 24
-python BO_refine.py --config-py NiPS3_config.py 24 26
+python BO_refine.py --config-py NiPS3_config.py 18 23
 
 # combine outputs of greedy fits into single file
 
