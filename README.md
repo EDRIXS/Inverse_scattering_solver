@@ -16,8 +16,8 @@ best fit candidates.
 Usage:
 
 Material/model-specific information is assumed to be stored in a
-config python script. Please consult with the examples provided in
-the examples/ folder. The script is dynamically loaded by the BO,
+config python script. Please consult with the examples NiPS3_config.py
+ans NiCl2_config.py. The config script is dynamically loaded by the BO,
 refinement and clustering scripts.
 
 Usage in a HPC environment is facilitated by an extra index argument
@@ -28,21 +28,13 @@ segmenting run batches.
 python BO_run.sh --config-py NiPS3_config.sh --init-seed 0 --run-ind 1
 
 2) Greedy refinement:
+(This command runs the refinement for candidate points with indices 0 through 6)
 
 python BO_refine.sh --config-py NiPS3_config.sh  0  6
 
 3) Clustering:
 
 python BO_cluster.sh --config-py NiPS3_config.sh --input NiPS3_L1sum_Final_s0.025.txt --output NiPS3_clusters
-
-In these series of runs, we first perform a Greedy optimization for the
-material and model specified in the script NiPS3_config.sh, repeating
-the analysis a number N of times specified in the config script with the
-appropriate random seeds depending on the argument index, and then properly
-names the output files using the index.
-Secondly, we perform the greedy refinement on the output of step 1.
-Thirdly, we select the best candidates in different "valleys" of the
-distance function.
 
 See NiPS_pipeline.sh for further details of the running process.
 
