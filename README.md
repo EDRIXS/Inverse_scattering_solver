@@ -25,16 +25,16 @@ segmenting run batches.
 
 1) Bayesian optimization:
 
-python BO_run.sh --config-py NiPS3_config.sh --init-seed 0 --run-ind 1
+python BO_run.py --config-py NiPS3_config.py --init-seed 0 --run-ind 1
 
 2) Greedy refinement:
 (This command runs the refinement for candidate points with indices 0 through 6)
 
-python BO_refine.sh --config-py NiPS3_config.sh  0  6
+python BO_refine.py --config-py NiPS3_config.py  0  6
 
 3) Clustering:
 
-python BO_cluster.sh --config-py NiPS3_config.sh --input NiPS3_L1sum_Final_s0.025.txt --output NiPS3_clusters
+python BO_cluster.py --config-py NiPS3_config.py --input NiPS3_L1sum_Final_s0.025.txt --output NiPS3_clusters
 
 See NiPS_pipeline.sh for further details of the running process.
 
@@ -62,22 +62,13 @@ V. Bisogni, Single- and Multimagnon Dynamics in Anti-ferromagnetic α -Fe2O3 Thi
 Please cite these as appropriate.
 
 
-Run locally
------------
+Run
+===
 
-Work with this by installing `docker <https://www.docker.com/>`_ and pip and then running
+This code is designed for linux only.
 
-.. code-block:: bash
-
-       pip install jupyter-repo2docker
-       jupyter-repo2docker  --editable --Repo2Docker.platform=linux/amd64 .
-
+```bash
+    conda env create -f environment.yml -n edrixs_BO
+    conda activate edrixs_BO
+```
 Change `tree` to `lab` in the URL for JupyterLab.
-
-Run remotely
-------------
-
-.. image:: https://mybinder.org/badge_logo.svg
- :target: https://mybinder.org/v2/gh/mpmdean/He2024dispersive/HEAD?filepath=plot.ipynb
-
-
