@@ -62,22 +62,13 @@ V. Bisogni, Single- and Multimagnon Dynamics in Anti-ferromagnetic α -Fe2O3 Thi
 Please cite these as appropriate.
 
 
-Run locally
------------
+Run
+===
 
-Work with this by installing `docker <https://www.docker.com/>`_ and pip and then running
+This code is designed for linux only.
 
-.. code-block:: bash
-
-       pip install jupyter-repo2docker
-       jupyter-repo2docker  --editable --Repo2Docker.platform=linux/amd64 .
-
+```bash
+    conda env create -f environment.yml -n edrixs_BO
+    conda activate edrixs_BO
+```
 Change `tree` to `lab` in the URL for JupyterLab.
-
-Run remotely
-------------
-
-.. image:: https://mybinder.org/badge_logo.svg
- :target: https://mybinder.org/v2/gh/mpmdean/He2024dispersive/HEAD?filepath=plot.ipynb
-
-
