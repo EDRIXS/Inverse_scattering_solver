@@ -28,7 +28,7 @@ python BO_refine.py --config-py NiPS3_config.py --num-points
 # Greedy refinement for the best points, here e.g. in batches of six
 # The codes of the section below can be run in parallel
 
-python BO_refine.py --config-py NiPS3_config.py --index1 0 --index2 6
+python BO_refine.py --config-py NiPS3_config.py  0  6
 python BO_refine.py --config-py NiPS3_config.py 6 12
 python BO_refine.py --config-py NiPS3_config.py 12 18
 python BO_refine.py --config-py NiPS3_config.py 18 23
