@@ -39,16 +39,16 @@ python BO_refine.py --config-py NiPS3_config.py 18 23
 
 # STEP 3: Clustering refined points to get physically nonequivalent candidates
 
-python BO_cluster.py --config-py NiPS3_config.py --input NiPS3_L1sum_Final_s0.025.txt --output NiPS3_clusters
+python BO_cluster.py --config-py NiPS3_config.py --input NiPS3_L1sum_Final_subseq_opt2.txt --output NiPS3_clusters
 
-# STEP 4: Select candidate point, and write coordinates to json, e.g. testparam_NiPS3.json
+# STEP 4: Plot results using jupyter notebook
+# STEP 5: Select candidate point, and write coordinates to json, e.g. testparam_NiPS3.json
 
-# STEP 5: Calculate confidence bounds and annotate
+# STEP 6: Calculate confidence bounds and annotate
 
 python BO_annotate.py --config-py NiPS3_config.py --params testparam_NiPS3.json
-python BO_intervals.py --config-py NiPS3_config.py --params testparam_NiPS3.json
 
-# STEP 6: Plot results using jupyter notebook
+
 
 # Cross-check: test distance value at the point specified by testparam_NiPS3.json
 
