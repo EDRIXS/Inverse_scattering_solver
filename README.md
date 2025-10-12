@@ -29,7 +29,7 @@ python BO_run.sh --config-py NiPS3_config.sh --init-seed 0 --run-ind 1
 
 2) Greedy refinement:
 
-python BO_refine.sh --config-py NiPS3_config.sh --index1 0 --index2 6
+python BO_refine.sh --config-py NiPS3_config.sh  0  6
 
 3) Clustering:
 
