@@ -25,16 +25,16 @@ segmenting run batches.
 
 1) Bayesian optimization:
 
-python BO_run.sh --config-py NiPS3_config.sh --init-seed 0 --run-ind 1
+python BO_run.py --config-py NiPS3_config.py --init-seed 0 --run-ind 1
 
 2) Greedy refinement:
 (This command runs the refinement for candidate points with indices 0 through 6)
 
-python BO_refine.sh --config-py NiPS3_config.sh  0  6
+python BO_refine.py --config-py NiPS3_config.py  0  6
 
 3) Clustering:
 
-python BO_cluster.sh --config-py NiPS3_config.sh --input NiPS3_L1sum_Final_s0.025.txt --output NiPS3_clusters
+python BO_cluster.py --config-py NiPS3_config.py --input NiPS3_L1sum_Final_s0.025.txt --output NiPS3_clusters
 
 See NiPS_pipeline.sh for further details of the running process.
 
