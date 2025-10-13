@@ -3,3 +3,5 @@
 .jupyter-server-log.txt
 .jupyter/
 .local/
+__pycache__/
+edrixs/__pycache__/

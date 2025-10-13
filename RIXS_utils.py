@@ -1,8 +1,5 @@
 import edrixs
 import numpy as np
-from solvers_fast import *
-from solvers_fast_double import *
-# suppress stdout output
 import contextlib
 
 def numgrad(cmap,dEloss,dOm):

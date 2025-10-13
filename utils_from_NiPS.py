@@ -1,14 +1,13 @@
 """ Various utilities copied from NiPS3_edRIXS project """
 
 import edrixs
+from edrixs.photon_transition import dipole_polvec_rixs
 from edrixs import scattering_mat
 import numpy as np
 import scipy
-import ipyparallel as ipp
 import contextlib
 from solvers_fast_double import ed_1v1c_py_full_double, saveops
 
-import pickle
 
 def get_pol(pol, tth=150., thin=10., phi=0.):
     """ Manually calculate polarization vectors by tranferring from experimental geometry into octahedral coordinates. """
@@ -24,34 +23,6 @@ def get_pol(pol, tth=150., thin=10., phi=0.):
     tmat = rmat_t2o(1)
     return np.dot(ei, tmat), np.dot(ef1, tmat), np.dot(ef2, tmat)
 
-def load_var(filename, form='pickle'):
-    """
-    Load the variable.
-    Example
-    -------
-    >>> data = load_var('data.pkl')
-    """
-    if form=='numpy':
-        data = np.load(filename)
-    elif form=='pickle':
-        with open(filename, 'rb') as file:
-            data = pickle.load(file)
-        file.close
-    return data
-
-def calc_Slater(U_dd=10., J_dd=1., U_pp=None, J_pp=None):
-    """ Calculate Slater integrals with given U and J. """
-    F4F2_ratio = 0.625
-    F2_dd = J_dd * 14. / (1. + F4F2_ratio)
-    F4_dd = F2_dd * F4F2_ratio
-    F0_dd = U_dd - 4.0 / 49.0 * F2_dd - 4.0 / 49.0 * F4_dd
-    if U_pp is not None and J_pp is not None:
-        F2_pp = J_pp * 25 / 3
-        F0_pp = U_pp - F2_pp * 4 / 25
-    else:
-        F0_pp = None
-        F2_pp = None
-    return F0_dd, F2_dd, F4_dd, F0_pp, F2_pp
 
 def perform_ED_1site(tenDq=0., soc_v_i=0, soc_v_n=0., soc_c=0.,
                      F0_dd=0., F2_dd=0., F4_dd=0.,
@@ -318,8 +289,6 @@ class RIXS_runner_NIPS3:
             sptab2,sptab4,sptabtr=saveops(('d','p'),8)
             v_soc=(params['soc_v_i'],params['soc_v_n'])
             c_soc=params['soc_c']
-            v_cfmat = edrixs.cf_cubic_d(1.0*params['tenDq'])
-
             slater_i = [F0_d, params['F2_dd'], params['F4_dd']]   # Fk for d
             slater_n = [
                 F0_d, params['F2_dd'], params['F4_dd'],   # Fk for d

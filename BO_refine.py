@@ -1,8 +1,8 @@
-import argparse, importlib.util
+import argparse
 import pybobyqa
 import sys
 
-from optEDRIXS import run_bayesian_optimization, import_config, reconstBOresults, getMask
+from optEDRIXS import import_config, reconstBOresults, getMask
 import numpy as np
 
 def _normalize_bounds(bounds, name):

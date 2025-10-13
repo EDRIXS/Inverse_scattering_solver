@@ -1,4 +1,4 @@
-import argparse, importlib.util
+import argparse
 
 from optEDRIXS import run_bayesian_optimization, import_config
 
