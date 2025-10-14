@@ -2,11 +2,10 @@ import edrixs
 import numpy as np
 
 from RIXS_utils import getParams, RIXS_runner
-
-from solvers_fast import *
-from solvers_fast_double import *
+from solvers_fast_double import saveops, ed_1v1c_py_full_double, rixs_1v1c_py_double
 
 from optEDRIXS import target_L1sum
+INIT_SEED = 0
 orbit='3d'
 edge='L3'
 
@@ -136,7 +135,7 @@ def funGreedy(F2_dd, F2_dp, F4_dd, G1_dp, G3_dp, tenDq, xoffset, soc_v_i,soc_v_n
     return -target_L1sum(params,rixs_funV,rixs_ref)
 
 record=dict(name = data_str, optname=data_opt, num_runs_local = num_runs_local, num_runs_global = num_runs_global, init_points = init_points,
-            init_seed = init_seed, run_ind = 0, num_iters = num_iters,
+            init_seed = INIT_SEED, run_ind = 0, num_iters = num_iters,
             true_values = true_values, pbounds = pbounds, method = method,
             tfunc = tfunc, descr = descr, output_dir = output_dir, threshold_factor=threshold_factor,
             max_eval_greedy=max_eval_greedy, greedy_bounds = greedy_bounds, greedy_filters = greedy_filters,

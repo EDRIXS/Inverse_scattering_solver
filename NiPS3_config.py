@@ -1,22 +1,18 @@
-import edrixs
 import numpy as np
 
 #fasten up computations with some parallelization
 import ipyparallel as ipp
 
 #these dependencies are from the NiPS3 project
-from utils_from_NiPS import get_pol, perform_ED_1site, calc_RIXS_Q0
 from utils_from_NiPS import RIXS_runner_NIPS3
 from RIXS_utils import getParams
-from optEDRIXS import run_bayesian_optimization, target_L1sum, target_All
+from optEDRIXS import target_L1sum, target_All
 
 rc = ipp.Cluster(n=6).start_and_connect_sync()
 rc.ids
 view=rc[:];
 with view.sync_imports():
-    import edrixs
     import numpy as np
-    from utils_from_NiPS import  get_pol, perform_ED_1site, calc_RIXS_Q0
 
 orbit = '3d'
 edge = 'L3'
@@ -24,7 +20,7 @@ edge = 'L3'
 # occupation number on d shell in the initial state
 n_occu = 8
 
-rixs_ref = np.loadtxt('NiPS3v2.numpy');
+rixs_ref = np.loadtxt('NiPS3v2.numpy')
 
 eloss = np.linspace(0.5, 2.0,151)
 ombounds = [0.,12.0]
@@ -41,9 +37,9 @@ tfunc = "distance_neg"
 data_str = 'NiPS3_L1sum_Final'
 data_opt='_subseq_opt2'
 
-num_runs_global=10
-num_runs_local=6
-num_iters=1010
+num_runs_global=2
+num_runs_local=2
+num_iters=40
 
 init_points = 10
 init_seed = 0
