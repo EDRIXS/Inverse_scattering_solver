@@ -6,37 +6,43 @@ spectra from first-principles models based on exact diagonalization.
 
 The method works in three steps:
 
-1) Bayesian Optimization (BO) in the most important parameter space
+1. Bayesian Optimization (BO) in the most important parameter space
 
-2) Greedy refinement of the best outcomes of BO
+2. Greedy refinement of the best outcomes of BO
 
-3) Clustering the outcomes for a small number of distinct
+3. Clustering the outcomes for a small number of distinct
 best fit candidates.
 
 Usage:
 
 Material/model-specific information is assumed to be stored in a
-config python script. Please consult with the examples NiPS3_config.py
-ans NiCl2_config.py. The config script is dynamically loaded by the BO,
+config python script. Please consult with the examples `NiPS3_config.py`
+and `NiCl2_config.py`. The config script is dynamically loaded by the BO,
 refinement and clustering scripts.
 
 Usage in a HPC environment is facilitated by an extra index argument
 segmenting run batches.
 
-1) Bayesian optimization:
+1. Bayesian optimization:
 
+```bash
 python BO_run.py --config-py NiPS3_config.py --init-seed 0 --run-ind 1
+```
 
-2) Greedy refinement:
+2. Greedy refinement:
 (This command runs the refinement for candidate points with indices 0 through 6)
 
+```bash
 python BO_refine.py --config-py NiPS3_config.py  0  6
+```
 
-3) Clustering:
+3. Clustering:
 
+```bash
 python BO_cluster.py --config-py NiPS3_config.py --input NiPS3_L1sum_Final_s0.025.txt --output NiPS3_clusters
+```
 
-See NiPS_pipeline.sh for further details of the running process.
+See `NiPS_pipeline.sh` for further details of the running process.
 
 Data Repository
 ===============
