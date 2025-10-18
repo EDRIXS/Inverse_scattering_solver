@@ -389,7 +389,7 @@ def rixs_1v1c_py_double(eval_i, eval_n, trans_op, ominc, eloss, *,
 #    for i, om in enumerate(ominc):
     t = time.time()
     F_fi = scattering_mat2(eval_i, eval_n, trans_op[:, :, 0:max(gs_list)+1],
-                              trans_emi, ominc, gamma_core[i])
+                              trans_emi, ominc, gamma_core)
     t=time.time()-t
     print("Time spent with scattering_mat2: "+str(t))
 
